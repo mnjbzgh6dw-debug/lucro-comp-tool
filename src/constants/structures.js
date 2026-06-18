@@ -15,6 +15,8 @@ export const STRUCTURES = {
     name: 'Base + Collections Bonus',
     description:
       'Fixed base salary, bonus % on collections above a minimum goal.',
+    overview:
+      'The most common model in chiropractic for good reason — the base is only paid when collections justify it, and the bonus only pays when the practice can afford it. Simple to explain, simple to track. Get one thing right: set the collections goal at a level that\'s achievable in a realistic month. Too high and the bonus stops motivating entirely.',
     metric: { key: 'collections', label: 'Monthly Collections', format: 'currency' },
     defaults: {
       salaryType: 'Annual',
@@ -69,6 +71,8 @@ export const STRUCTURES = {
     id: 'base_profit',
     name: 'Base + Profit Bonus',
     description: 'Fixed base salary, bonus % on net profit above a threshold.',
+    overview:
+      'This rewards profitability, not just revenue. The bonus only triggers when the practice clears a profit threshold — so the team member wins when the whole business wins, not just when the schedule is full. Use this for someone whose decisions affect costs and efficiency across the practice, not just their own numbers. Only works if they have enough visibility into the financials to understand what they\'re being rewarded for.',
     metric: { key: 'profit', label: 'Monthly Net Profit', format: 'currency' },
     defaults: {
       salaryType: 'Monthly',
@@ -110,6 +114,8 @@ export const STRUCTURES = {
     name: 'Collections-Only (No Base)',
     description:
       'No guaranteed salary — team member earns a straight % of collections.',
+    overview:
+      'No guaranteed salary — the team member earns a straight percentage of what they collect. Zero fixed payroll cost for the practice; uncapped earning potential for them. Use this for a confident, experienced producer who doesn\'t need the security of a base. Where it goes wrong: offering it to someone who isn\'t yet producing consistently enough to carry the uncertainty.',
     metric: { key: 'collections', label: 'Monthly Collections', format: 'currency' },
     defaults: {
       collectionsPct: 40,
@@ -149,6 +155,8 @@ export const STRUCTURES = {
     id: 'tiered_collections',
     name: 'Tiered Collections Bonus',
     description: 'Escalating bonus % as collections hit higher bands.',
+    overview:
+      'A flat bonus treats every dollar above goal the same way. This model doesn\'t — the rate escalates the further they push past the target. Use it when a strong performer has plateaued on a flat bonus and needs a new reason to push. Review the thresholds annually — what was a stretch target last year may be standard performance this year.',
     metric: { key: 'collections', label: 'Monthly Collections', format: 'currency' },
     defaults: {
       baseSalary: 4000,
@@ -170,6 +178,8 @@ export const STRUCTURES = {
     id: 'per_visit',
     name: 'Per-Visit Rate',
     description: 'Fixed dollar amount per patient visit — no base, no bonus.',
+    overview:
+      'Fixed dollar amount per visit. No ambiguity, no complexity. Use this for sessional or irregular arrangements where a full employment structure doesn\'t make sense. The limitation: no incentive around billing quality or collections follow-through. If that matters for the role, set that expectation separately and explicitly.',
     metric: { key: 'visits', label: 'Visits / Month', format: 'number' },
     defaults: {
       visitRate: 25,
@@ -198,6 +208,8 @@ export const STRUCTURES = {
     name: 'Flat Milestone Bonus',
     description:
       'Fixed $ bonus paid when a specific collections or visit target is hit.',
+    overview:
+      'Hit the number, earn the reward. The clearest incentive structure there is. Use it for defined performance pushes — a new practice building toward a target, or a specific period where you want sharp focus. Build in a stretch milestone from the start. Once the first target is hit, motivation flattens without something else to work toward.',
     metric: { key: 'performance', label: 'Performance', format: 'auto' },
     defaults: {
       baseSalary: 4000,
@@ -256,6 +268,8 @@ export const STRUCTURES = {
     name: 'Base + Two-Tier Bonus',
     description:
       'Base salary + lower bonus % up to a cap, higher % beyond the cap.',
+    overview:
+      'A standard base + bonus with a gear shift built in. One rate up to a cap, a higher rate beyond it. The base covers security, the first tier rewards consistency, the second tier rewards genuine high performance. Use this when a flat bonus rate no longer feels like enough to retain a strong producer. Set the cap at a real stretch target — not so low it triggers every month, not so high it never does.',
     metric: { key: 'collections', label: 'Monthly Collections', format: 'currency' },
     defaults: {
       baseSalary: 4000,
@@ -295,6 +309,8 @@ export const STRUCTURES = {
     id: 'revenue_share',
     name: 'Revenue Share',
     description: 'Team member earns a % of total gross practice revenue.',
+    overview:
+      'The team member earns a percentage of total practice revenue — not just their own production. Their incentives are fully aligned with yours. Every decision that grows the practice directly affects their income. Reserve this for someone with genuine influence over practice-wide outcomes. Offering it too broadly creates payroll exposure that isn\'t backed by proportional value.',
     metric: { key: 'revenue', label: 'Gross Monthly Revenue', format: 'currency' },
     defaults: {
       sharePct: 10,

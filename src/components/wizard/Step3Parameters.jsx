@@ -189,6 +189,13 @@ export default function Step3Parameters() {
         </p>
       </div>
 
+      {structure.overview && (
+        <div className="rounded-xl border border-gold/40 bg-light-gold px-4 py-4">
+          <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gold">Overview of Compensation Type</p>
+          <p className="text-sm leading-relaxed text-navy/80">{structure.overview}</p>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {structure.fields.map((field) => (
           <div
