@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(tee /tmp/lucro-dev.log)",
+      "Read(//tmp/**)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(kill 29580)",
+      "Bash(lsof -ti:5173)",
+      "Bash(xargs kill -9)",
+      "Bash(cp /tmp/lucro_test.mjs ./_lucro_test.mjs)",
+      "Bash(node ./_lucro_test.mjs)",
+      "Bash(rm -f ./_lucro_test.mjs)",
+      "Read(//Users/denecremen/Desktop/Desktop - Dene's Laptop/Claude/Claude Code Projects/**)",
+      "Bash(git -C \"/Users/denecremen/Desktop/Desktop - Dene's Laptop/Claude/Claude Code Projects/Bonus Calculator\" status)",
+      "Bash(find ~/Desktop -maxdepth 5 -name \"package.json\" 2>/dev/null | grep -i lucro | head -5)",
+      "Bash(xxd)",
+      "Bash(xargs -0 -I{} dirname {})"
+    ]
+  }
+}

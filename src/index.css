@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  body {
+    @apply bg-light-navy text-navy antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    letter-spacing: -0.015em;
+  }
+}
+
+@layer utilities {
+  /* Tabular figures keep number columns from shifting on recalculation */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Print: render only the one-pager, A4 portrait, nothing clipped.  */
+/* ---------------------------------------------------------------- */
+@media screen {
+  .print-only {
+    display: none;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+
+  /* Hide everything that is interactive / on-screen chrome */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Show the dedicated print layout */
+  .print-only {
+    display: block !important;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print-page {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none !important;
+  }
+}
