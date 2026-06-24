@@ -17,6 +17,20 @@ export const STRUCTURES = {
       'Fixed base salary, bonus % once collections cover your target payroll share.',
     overview:
       'The bonus only kicks in once the base salary settles into a healthy share of collections — not before. Set your salary-to-collections target (the maximum % of collections you want this role to cost), and the tool calculates the collections level where that target is met. Below that level, the base is costing more than your target allows. Above it, every extra dollar collected gets shared.',
+    guide: [
+      {
+        heading: 'Why this model works',
+        text: 'The bonus threshold is not a fixed number that requires periodic adjustment — it is a ratio. As the base salary changes, the breakeven point recalculates automatically, keeping payroll aligned with collections without manual recalibration.',
+      },
+      {
+        heading: 'When to use it',
+        text: 'This model suits roles where a guaranteed base is appropriate, but payroll cost must remain within a defined share of collections before any additional compensation is paid.',
+      },
+      {
+        heading: 'Considerations',
+        text: 'Set the salary-to-collections target too low, and the bonus becomes difficult to reach, reducing its effect as an incentive. Set it too high, and the practice guarantees a higher payroll cost than the role\'s output may justify, independent of whether a bonus is ever paid.',
+      },
+    ],
     metric: { key: 'collections', label: 'Monthly Collections', format: 'currency' },
     defaults: {
       salaryType: 'Annual',

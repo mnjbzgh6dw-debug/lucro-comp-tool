@@ -207,6 +207,17 @@ export default function Step3Parameters() {
         ))}
       </div>
 
+      {structure.guide && (
+        <div className="rounded-xl border border-navy/10 bg-light-navy px-4 py-4 space-y-4">
+          {structure.guide.map(({ heading, text }) => (
+            <div key={heading}>
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-navy/50">{heading}</p>
+              <p className="text-sm leading-relaxed text-navy/80">{text}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
       {tierError && (
         <div className="rounded-lg border border-red/30 bg-red/10 px-3 py-2 text-sm text-red">
           {tierError}
