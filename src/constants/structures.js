@@ -14,7 +14,7 @@ export const STRUCTURES = {
     id: 'base_collections',
     name: 'Base + Collections Bonus',
     description:
-      'Fixed base salary, bonus % on collections above a minimum goal.',
+      'Fixed base salary, bonus % once collections cover your target payroll share.',
     overview:
       'The bonus only kicks in once the base salary settles into a healthy share of collections — not before. Set your salary-to-collections target (the maximum % of collections you want this role to cost), and the tool calculates the collections level where that target is met. Below that level, the base is costing more than your target allows. Above it, every extra dollar collected gets shared.',
     metric: { key: 'collections', label: 'Monthly Collections', format: 'currency' },
