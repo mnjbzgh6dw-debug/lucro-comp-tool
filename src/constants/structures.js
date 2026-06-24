@@ -16,7 +16,7 @@ export const STRUCTURES = {
     description:
       'Fixed base salary, bonus % on collections above a minimum goal.',
     overview:
-      'The most common model in chiropractic for good reason — the base is only paid when collections justify it, and the bonus only pays when the practice can afford it. Simple to explain, simple to track. Get one thing right: set the collections goal at a level that\'s achievable in a realistic month. Too high and the bonus stops motivating entirely.',
+      'The bonus only kicks in once the base salary settles into a healthy share of collections — not before. Set your salary-to-collections target (the maximum % of collections you want this role to cost), and the tool calculates the collections level where that target is met. Below that level, the base is costing more than your target allows. Above it, every extra dollar collected gets shared.',
     metric: { key: 'collections', label: 'Monthly Collections', format: 'currency' },
     defaults: {
       salaryType: 'Annual',
