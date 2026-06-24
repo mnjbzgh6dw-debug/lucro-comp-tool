@@ -87,6 +87,29 @@ export const STRUCTURES = {
     description: 'Fixed base salary, bonus % on net profit above a threshold.',
     overview:
       'This rewards profitability, not just revenue. The bonus only triggers when the practice clears a profit threshold — so the team member wins when the whole business wins, not just when the schedule is full. Use this for someone whose decisions affect costs and efficiency across the practice, not just their own numbers. Only works if they have enough visibility into the financials to understand what they\'re being rewarded for.',
+    guide: [
+      {
+        heading: 'How to think about your profit number',
+        text: [
+          'This is a number you bring to the tool — typically collections, less operating expenses, for the period you\'re measuring.',
+          'For a whole-practice bonus, use the practice\'s standard operating expenses — staff costs, rent, supplies, and overhead the business carries regardless of who\'s working.',
+          'For a division, provider, or specific role, whole-practice profit usually won\'t reflect what that person can actually influence. Calculate profit specifically for that slice — collections it generates, less costs directly traceable to it.',
+          'A useful test: could this person reasonably affect this cost through their own decisions? If yes, include it. If no — costs run through the business that this role has no influence over, such as the owner\'s personal expenses run through the practice — it\'s worth leaving out, since including it rewards or penalises someone for decisions that were never theirs to make.',
+        ],
+      },
+      {
+        heading: 'Why this model works',
+        text: 'A profit-based bonus ties the reward to outcomes, not just activity. The team member only benefits when the business — or the part of it they influence — is genuinely better off, not simply when the schedule is full.',
+      },
+      {
+        heading: 'When to use it',
+        text: 'Best suited to a role where decisions affect costs and efficiency, not only their own production — someone managing a division, overseeing a team, or with real visibility into how the numbers are built. It only works if they understand what they\'re being measured against.',
+      },
+      {
+        heading: 'Considerations',
+        text: 'The bonus only motivates if the profit figure is one the team member can see and trust. If costs they don\'t control are folded into the number, or if it\'s unclear how their own bonus affects the figure it\'s based on, the incentive weakens — get the definition right before the conversation, not during it.',
+      },
+    ],
     metric: { key: 'profit', label: 'Monthly Net Profit', format: 'currency' },
     defaults: {
       salaryType: 'Monthly',

@@ -212,7 +212,12 @@ export default function Step3Parameters() {
           {structure.guide.map(({ heading, text }) => (
             <div key={heading}>
               <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-navy/50">{heading}</p>
-              <p className="text-sm leading-relaxed text-navy/80">{text}</p>
+              {Array.isArray(text)
+                ? text.map((para, i) => (
+                    <p key={i} className="text-sm leading-relaxed text-navy/80 mt-2 first:mt-0">{para}</p>
+                  ))
+                : <p className="text-sm leading-relaxed text-navy/80">{text}</p>
+              }
             </div>
           ))}
         </div>
