@@ -169,7 +169,7 @@ export const STRUCTURES = {
     ],
     metric: { key: 'collections', label: 'Monthly Collections', format: 'currency' },
     defaults: {
-      collectionsPct: 40,
+      collectionsPct: 25,
       avgPerVisit: 75,
       visitPeriod: 'Month',
       targetComp: 6000,
