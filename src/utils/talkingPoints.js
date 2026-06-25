@@ -6,6 +6,7 @@ import { fmtCurrency, fmtNumber, fmtPct } from './format'
 // All numbers route through the formatters, so missing inputs read as "—".
 
 const nameOf = (ctx) => ctx.name?.trim() || 'Your team member'
+const nameOfLc = (ctx) => ctx.name?.trim() || 'your team member'
 
 const BUILDERS = {
   base_collections(ctx) {
@@ -21,8 +22,8 @@ const BUILDERS = {
     }
     return [
       `${name}'s base of ${fmtCurrency(result.monthlyBase)}/month is justified when monthly collections reach ${fmtCurrency(goal)} — that's about ${fmtNumber(visitsNeeded)} visits a ${period} at your current average.`,
-      `For every dollar collected above ${fmtCurrency(goal)}, ${name} earns ${fmtNumber(params.bonusPct)}¢ as a bonus — strong months reward both of you.`,
-      `At ${fmtCurrency(metricValue)} collections, ${name} takes home ${fmtCurrency(result.totalComp)} — ${fmtPct(result.costPct)} of what the practice brings in.`,
+      `For every dollar collected above ${fmtCurrency(goal)}, ${nameOfLc(ctx)} earns ${fmtNumber(params.bonusPct)}¢ as a bonus — strong months reward both of you.`,
+      `At ${fmtCurrency(metricValue)} collections, ${nameOfLc(ctx)} takes home ${fmtCurrency(result.totalComp)} — ${fmtPct(result.costPct)} of what the practice brings in.`,
       `The goal isn't a ceiling — it's the floor. Everything above it is shared growth.`,
     ]
   },
@@ -32,7 +33,7 @@ const BUILDERS = {
     const name = nameOf(ctx)
     return [
       `${name}'s base of ${fmtCurrency(result.monthlyBase)}/month comes with a bonus of ${fmtNumber(params.bonusPct)}% on every dollar of net profit above ${fmtCurrency(result.extra.profitThreshold)}.`,
-      `This rewards efficiency, not just top-line — ${name} benefits directly when the practice runs lean.`,
+      `This rewards efficiency, not just top-line — ${nameOfLc(ctx)} benefits directly when the practice runs lean.`,
       `At ${fmtCurrency(metricValue)} of monthly profit, the bonus is ${fmtCurrency(result.bonus)}, bringing total comp to ${fmtCurrency(result.totalComp)}.`,
       `Against ${fmtCurrency(result.extra.monthlyCollections)} in collections, that's ${fmtPct(result.costPct)} of what the practice brings in.`,
     ]
@@ -52,7 +53,7 @@ const BUILDERS = {
     return [
       `To take home ${fmtCurrency(params.targetComp)} a month, ${name} needs to bring in ${fmtCurrency(req)} in collections — about ${fmtNumber(visitsForTarget)} visits a ${period} at your current average.`,
       `There's no guaranteed salary — ${name} earns exactly ${fmtNumber(params.collectionsPct)}% of what they produce.`,
-      `Every patient seen flows straight into ${name}'s paycheck — incentives are fully aligned with production.`,
+      `Every patient seen flows straight into ${nameOfLc(ctx)}'s paycheck — incentives are fully aligned with production.`,
       `The trade-off is no floor: slow months are lean, but strong months are uncapped.`,
     ]
   },
@@ -64,7 +65,7 @@ const BUILDERS = {
     const t1 = tiers[0] || {}
     const t2 = tiers[1] || tiers[0] || {}
     return [
-      `The tiers reward momentum. The more ${name} produces, the higher the rate on every additional dollar.`,
+      `The tiers reward momentum. The more ${nameOfLc(ctx)} produces, the higher the rate on every additional dollar.`,
       `At ${fmtCurrency(t1.upper)}, the bonus rate steps up from ${fmtNumber(t1.pct)}% to ${fmtNumber(t2.pct)}% — that's the stretch target worth pushing for.`,
       `${name}'s base of ${fmtCurrency(result.monthlyBase)} is the floor; the bands above ${fmtCurrency(result.extra.monthlyGoal)} are pure shared upside.`,
       `Because the rate climbs, the cost of each bonus dollar is earned by collections that already cleared the goal.`,
@@ -77,7 +78,7 @@ const BUILDERS = {
     return [
       `${name} earns ${fmtCurrency(params.visitRate)} per visit — at ${fmtNumber(metricValue)} visits that's ${fmtCurrency(result.totalComp)} for the month.`,
       `Comp scales 1:1 with patient volume — busy months pay more, slow months cost the practice less.`,
-      `At your average of ${fmtCurrency(params.avgPerVisit)} collected per visit, ${name}'s pay is ${fmtPct(result.costPct)} of what those visits bring in.`,
+      `At your average of ${fmtCurrency(params.avgPerVisit)} collected per visit, ${nameOfLc(ctx)}'s pay is ${fmtPct(result.costPct)} of what those visits bring in.`,
       `There's no base and no bonus to model — it's the simplest structure to explain and to budget.`,
     ]
   },
@@ -96,7 +97,7 @@ const BUILDERS = {
       )
     }
     points.push(
-      `At ${tgtFmt(metricValue)}${params.milestoneType === 'Visit Target' ? ' visits' : ''}, ${name}'s total comp is ${fmtCurrency(result.totalComp)}.`
+      `At ${tgtFmt(metricValue)}${params.milestoneType === 'Visit Target' ? ' visits' : ''}, ${nameOfLc(ctx)}'s total comp is ${fmtCurrency(result.totalComp)}.`
     )
     return points
   },
@@ -120,9 +121,9 @@ const BUILDERS = {
       `${name} earns ${fmtNumber(params.sharePct)}% of total gross practice revenue — comp is tied to the whole practice's performance, not just their own production.`,
       params.hasBase
         ? `A base of ${fmtCurrency(result.monthlyBase)} provides stability, with the revenue share layered on top.`
-        : `There's no base salary — ${name}'s entire comp is the revenue share, fully variable with the practice.`,
+        : `There's no base salary — ${nameOfLc(ctx)}'s entire comp is the revenue share, fully variable with the practice.`,
       `At ${fmtCurrency(metricValue)} in gross revenue, that's ${fmtCurrency(result.totalComp)} total — ${fmtPct(result.costPct)} of gross.`,
-      `This aligns ${name} with overall practice growth, not just the patients they personally see.`,
+      `This aligns ${nameOfLc(ctx)} with overall practice growth, not just the patients they personally see.`,
     ]
   },
 }

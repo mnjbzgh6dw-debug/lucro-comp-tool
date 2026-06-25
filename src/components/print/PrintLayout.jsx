@@ -1,6 +1,6 @@
 import { useApp } from '../../AppContext'
 import { useComputedScenarios } from '../../utils/useComputedScenarios'
-import { buildSummary } from '../../utils/verdict'
+import { buildSummary, buildFullVerdictSummary } from '../../utils/verdict'
 import { buildTalkingPoints } from '../../utils/talkingPoints'
 import { fmtCurrency, fmtMetric, fmtPct, fmtParam } from '../../utils/format'
 import CompChart from '../dashboard/CompChart'
@@ -19,6 +19,12 @@ export default function PrintLayout() {
   const summary = buildSummary({
     name: profile.teamMemberName,
     costPct: atGoalRow?.result?.costPct ?? null,
+    targetPct,
+  })
+
+  const fullSummary = buildFullVerdictSummary({
+    name: profile.teamMemberName,
+    rows,
     targetPct,
   })
 
@@ -86,6 +92,12 @@ export default function PrintLayout() {
               <span className="tabular font-semibold">{t.pct}%</span>
             </div>
           ))}
+        <div className="col-span-2 mt-1 flex justify-between rounded bg-navy/5 px-2 py-1">
+          <span className="text-navy/70">Monthly goal / floor <span className="font-normal text-navy/40">(calculated from your inputs)</span></span>
+          <span className="tabular font-bold">
+            {structure.metric.format === 'number' ? fmtNumber(atGoalRow?.metricNumber) : fmtCurrency(atGoalRow?.metricNumber)}
+          </span>
+        </div>
       </div>
 
       {/* Scenario analysis */}
@@ -107,7 +119,6 @@ export default function PrintLayout() {
             <tr key={r.id} className="border-b border-navy/10">
               <td className="py-0.5 pr-2 font-medium">
                 {r.label || '—'}
-                {r.belowGoal && <span className="text-navy/40"> (below goal)</span>}
               </td>
               <td className="tabular py-0.5 pr-2">
                 {fmtMetric(r.metricNumber, structure.metric.format)}
@@ -136,7 +147,7 @@ export default function PrintLayout() {
         <span className="font-bold">
           {v?.icon} {v?.label}
         </span>{' '}
-        — {summary}
+        — {fullSummary || summary}
       </p>
 
       {/* Talking points */}
