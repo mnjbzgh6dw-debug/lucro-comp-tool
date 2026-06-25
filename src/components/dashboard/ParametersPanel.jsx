@@ -123,6 +123,7 @@ export default function ParametersPanel() {
           <p className="text-[11px] leading-snug text-navy/40">
             <span className="font-semibold text-blue-700">Blue</span> = your inputs ·{' '}
             <span className="font-semibold text-navy">Black</span> = calculated.
+            {' '}The monthly goal is derived from your inputs — not set directly.
           </p>
         </div>
       )}

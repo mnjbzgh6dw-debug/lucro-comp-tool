@@ -300,6 +300,20 @@ export const STRUCTURES = {
       'Fixed $ bonus paid when a specific collections or visit target is hit.',
     overview:
       'Hit the number, earn the reward. The clearest incentive structure there is. Use it for defined performance pushes — a new practice building toward a target, or a specific period where you want sharp focus. Build in a stretch milestone from the start. Once the first target is hit, motivation flattens without something else to work toward.',
+    guide: [
+      {
+        heading: 'Why this model works',
+        text: 'A milestone bonus gives total clarity: hit the number, get the reward. There\'s no calculation to question and nothing to dispute at month-end.',
+      },
+      {
+        heading: 'When to use it',
+        text: 'Best suited to a defined push — a new practice building toward its first real target, or a specific period where sharp, short-term focus matters more than an ongoing incentive structure.',
+      },
+      {
+        heading: 'Considerations',
+        text: 'A single milestone loses its pull the moment it\'s hit, with nothing left to work toward. Build in a stretch milestone from the start if you want the incentive to carry past the first target — and set genuinely stretch-level thresholds, since a milestone that\'s hit easily every month stops functioning as one.',
+      },
+    ],
     metric: { key: 'performance', label: 'Performance', format: 'auto' },
     defaults: {
       baseSalary: 4000,
@@ -325,13 +339,20 @@ export const STRUCTURES = {
         key: 'milestoneTarget',
         label: 'Milestone target',
         type: 'currency',
+        hint: 'The collections total or visit count that triggers the bonus, depending on the milestone type selected above.',
         currencyIf: (p) => p.milestoneType === 'Collections Target',
       },
-      { key: 'bonusAmount', label: 'Bonus amount on hitting milestone', type: 'currency' },
+      {
+        key: 'bonusAmount',
+        label: 'Bonus amount on hitting milestone',
+        type: 'currency',
+        hint: 'A fixed dollar amount, paid once the milestone is reached — this doesn\'t scale with how far past the target the practice goes.',
+      },
       {
         key: 'hasStretch',
         label: 'Add a second stretch milestone?',
         type: 'toggle',
+        fullWidth: true,
         options: [
           { value: false, label: 'No' },
           { value: true, label: 'Yes' },
@@ -360,6 +381,20 @@ export const STRUCTURES = {
       'Base salary + lower bonus % up to a cap, higher % beyond the cap.',
     overview:
       'A standard base + bonus with a gear shift built in. One rate up to a cap, a higher rate beyond it. The base covers security, the first tier rewards consistency, the second tier rewards genuine high performance. Use this when a flat bonus rate no longer feels like enough to retain a strong producer. Set the cap at a real stretch target — not so low it triggers every month, not so high it never does.',
+    guide: [
+      {
+        heading: 'Why this model works',
+        text: 'A flat bonus rate doesn\'t flex as performance grows. This model keeps a steady rate for solid, consistent overage, then rewards a real push past the cap with a higher rate — without the complexity of multiple open-ended bands.',
+      },
+      {
+        heading: 'When to use it',
+        text: 'Best suited when a flat bonus rate no longer feels like enough to retain a strong producer, but a full multi-tier structure is more complexity than the role needs.',
+      },
+      {
+        heading: 'Considerations',
+        text: 'Set the cap at a genuine stretch point — not so low that the higher rate triggers most months, and not so high that it\'s rarely reached. Revisit the cap periodically as collections grow, the same way you would with any tiered structure.',
+      },
+    ],
     metric: { key: 'collections', label: 'Monthly Collections', format: 'currency' },
     defaults: {
       baseSalary: 4000,
@@ -373,16 +408,6 @@ export const STRUCTURES = {
       { key: 'baseSalary', label: 'Base salary (monthly)', type: 'currency' },
       { key: 'monthlyGoal', label: 'Monthly collections goal', type: 'currency' },
       {
-        key: 'tierMethod',
-        label: 'Tier calculation method',
-        type: 'toggle',
-        fullWidth: true,
-        options: [
-          { value: 'Cumulative', label: 'Cumulative' },
-          { value: 'Cliff', label: 'Cliff' },
-        ],
-      },
-      {
         key: 'tier1Pct',
         label: 'Tier 1 bonus % (overage up to cap)',
         type: 'percentSelect',
@@ -394,6 +419,7 @@ export const STRUCTURES = {
         key: 'tier1Cap',
         label: 'Tier 1 cap (overage $ where rate escalates)',
         type: 'currency',
+        hint: 'Once overage passes this amount, the higher Tier 2 rate applies — but only to the portion above the cap. Everything up to the cap stays at the Tier 1 rate.',
       },
       {
         key: 'tier2Pct',
@@ -411,13 +437,28 @@ export const STRUCTURES = {
     name: 'Revenue Share',
     description: 'Team member earns a % of total gross practice revenue.',
     overview:
-      'The team member earns a percentage of total practice revenue — not just their own production. Their incentives are fully aligned with yours. Every decision that grows the practice directly affects their income. Reserve this for someone with genuine influence over practice-wide outcomes. Offering it too broadly creates payroll exposure that isn\'t backed by proportional value.',
+      'The team member earns a percentage of total practice revenue — not just their own production. Their income grows when the top line grows. Every decision that grows the practice directly affects their income. Reserve this for someone with genuine influence over practice-wide outcomes. Offering it too broadly creates payroll exposure that isn\'t backed by proportional value.',
+    guide: [
+      {
+        heading: 'Why this model works',
+        text: 'Tying pay to total practice revenue gives someone with real influence over growth a direct stake in the outcome, beyond their own individual output.',
+      },
+      {
+        heading: 'When to use it',
+        text: 'Best suited to a role with genuine, practice-wide influence over revenue — not simply a strong individual producer.',
+      },
+      {
+        heading: 'Considerations',
+        text: 'This model pays on revenue, not collections — the practice carries the full gap between what\'s billed and what\'s actually collected, on top of the bonus itself. It also doesn\'t reward collection follow-through or cost discipline, only top-line growth. If those matter for this role, a collections-based model is the safer choice.',
+      },
+    ],
     metric: { key: 'revenue', label: 'Gross Monthly Revenue', format: 'currency' },
     defaults: {
       sharePct: 10,
       hasBase: false,
       baseSalary: 4000,
       practiceRevenue: 60000,
+      collectionRate: 90,
     },
     fields: [
       {
@@ -447,6 +488,16 @@ export const STRUCTURES = {
         key: 'practiceRevenue',
         label: 'Practice gross monthly revenue',
         type: 'currency',
+        hint: 'Total billed revenue before write-offs, denials, or uncollected amounts are removed. Because this model pays on revenue, any gap between what\'s billed and what\'s collected is a cost the practice absorbs on top of the bonus — not the team member.',
+      },
+      {
+        key: 'collectionRate',
+        label: 'Assumed collection rate (%)',
+        type: 'percentSelect',
+        hint: 'Your estimate of what percentage of billed revenue is actually collected. Used to show the effective bonus cost against cash in the door — adjust to match your practice\'s billing performance.',
+        min: 70,
+        max: 100,
+        step: 5,
       },
     ],
   },

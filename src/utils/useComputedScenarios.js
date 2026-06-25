@@ -43,7 +43,11 @@ export function useComputedScenarios() {
       }
     }
 
-    const atGoalRow = rows.find((r) => r.locked) || rows[0] || null
+    const atGoalRow =
+      rows.find((r) => r.locked && r.label === 'At Goal') ||
+      rows.find((r) => r.locked) ||
+      rows[0] ||
+      null
 
     return { rows, atGoalRow, highlightId, structure, targetPct }
   }, [scenarios, structureType, parameters, targetPct, expectedValue, structure])

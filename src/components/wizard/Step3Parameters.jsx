@@ -264,6 +264,15 @@ export default function Step3Parameters() {
         </div>
       )}
 
+      {structureType === 'revenue_share' && (
+        <div className="rounded-xl border border-amber/40 bg-amber/5 px-4 py-3">
+          <p className="mb-0.5 text-xs font-semibold uppercase tracking-wide text-amber">Revenue vs. Collections</p>
+          <p className="text-sm leading-relaxed text-navy/80">
+            This model pays out on billed revenue, not cash actually collected. Revenue can include amounts later written off, denied by insurance, or never collected.
+          </p>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {structure.fields.flatMap((field) => {
           const el = (
@@ -307,6 +316,60 @@ export default function Step3Parameters() {
           </div>
         )
       })()}
+
+      {structureType === 'revenue_share' && (() => {
+        const pct = Number(parameters.sharePct)
+        const revenue = Number(parameters.practiceRevenue)
+        const collRate = Number(parameters.collectionRate) || 90
+        const bonus = pct > 0 && revenue > 0 ? revenue * (pct / 100) : null
+        const collected = revenue > 0 ? revenue * (collRate / 100) : null
+        const effectivePct = bonus !== null && collected !== null && collected > 0
+          ? (bonus / collected) * 100
+          : null
+        if (bonus === null || collected === null || effectivePct === null) return null
+        return (
+          <div className="rounded-xl border border-navy/15 bg-light-navy px-4 py-3">
+            <p className="mb-0.5 text-xs font-semibold uppercase tracking-wide text-navy/50">Effective cost on cash collected</p>
+            <p className="text-sm leading-relaxed text-navy/80">
+              At a {pct}% revenue share on {fmtCurrency(revenue)} in gross revenue, this pays{' '}
+              <span className="font-semibold text-navy">{fmtCurrency(bonus)}/month</span>.{' '}
+              At your assumed {collRate}% collection rate, the practice collects{' '}
+              <span className="font-semibold text-navy">{fmtCurrency(collected)}</span> — so the bonus represents a real share of{' '}
+              <span className="font-semibold text-navy">{fmtNumber(effectivePct)}%</span> of cash in the door, not the headline {pct}%.
+            </p>
+          </div>
+        )
+      })()}
+
+      {structureType === 'hybrid_two_tier' && (() => {
+        const cap = Number(parameters.tier1Cap)
+        const t1Pct = Number(parameters.tier1Pct)
+        const t2Pct = Number(parameters.tier2Pct)
+        if (!cap || !t1Pct || !t2Pct) return null
+        const exampleOverage = Math.round((cap * 1.5) / 1000) * 1000
+        const t1Amount = cap * (t1Pct / 100)
+        const t2Amount = (exampleOverage - cap) * (t2Pct / 100)
+        const total = t1Amount + t2Amount
+        return (
+          <div className="rounded-xl border border-navy/15 bg-light-navy px-4 py-3">
+            <p className="mb-0.5 text-xs font-semibold uppercase tracking-wide text-navy/50">Worked example</p>
+            <p className="text-sm leading-relaxed text-navy/80">
+              At {fmtCurrency(exampleOverage)} in overage, the practice pays{' '}
+              <span className="font-semibold text-navy">{fmtCurrency(total)}</span> in bonus —{' '}
+              {fmtCurrency(t1Amount)} on the first {fmtCurrency(cap)}, plus{' '}
+              {fmtCurrency(t2Amount)} on the remaining {fmtCurrency(exampleOverage - cap)}.
+            </p>
+          </div>
+        )
+      })()}
+
+      {structureType === 'flat_milestone' && parameters.hasStretch === true && (
+        <div className="rounded-xl border border-navy/15 bg-light-navy px-4 py-3">
+          <p className="text-sm leading-relaxed text-navy/80">
+            When the stretch target is reached, the stretch bonus <span className="font-semibold">replaces</span> the first milestone bonus — the two don&apos;t stack. A month that clears both targets pays only the stretch amount.
+          </p>
+        </div>
+      )}
 
       {structureType === 'collections_only' && (() => {
         const pct = Number(parameters.collectionsPct)

@@ -9,12 +9,9 @@ const TODAY = '2026-06-18'
 function freshScenarios(structureType, parameters) {
   const goal = getMonthlyGoal(structureType, parameters)
   return [
-    {
-      id: crypto.randomUUID(),
-      label: 'At Goal',
-      metricValue: goal ?? '',
-      locked: true,
-    },
+    { id: crypto.randomUUID(), label: 'Below Goal', goalMultiplier: 0.75, metricValue: goal != null ? Math.round(goal * 0.75) : '', locked: true },
+    { id: crypto.randomUUID(), label: 'At Goal',    goalMultiplier: 1.0,  metricValue: goal ?? '', locked: true },
+    { id: crypto.randomUUID(), label: 'Above Goal', goalMultiplier: 1.5,  metricValue: goal != null ? Math.round(goal * 1.5) : '', locked: true },
   ]
 }
 
@@ -83,9 +80,13 @@ export function AppProvider({ children }) {
   const goal = getMonthlyGoal(structureType, parameters)
   const syncedScenarios = useMemo(
     () =>
-      scenarios.map((s) =>
-        s.locked ? { ...s, metricValue: goal ?? '' } : s
-      ),
+      scenarios.map((s) => {
+        if (!s.locked) return s
+        if (s.goalMultiplier != null && goal != null) {
+          return { ...s, metricValue: Math.round(goal * s.goalMultiplier) }
+        }
+        return { ...s, metricValue: goal ?? '' }
+      }),
     [scenarios, goal]
   )
 
