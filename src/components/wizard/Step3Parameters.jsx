@@ -285,6 +285,29 @@ export default function Step3Parameters() {
         })}
       </div>
 
+      {structureType === 'per_visit' && (() => {
+        const rate = Number(parameters.visitRate)
+        const avg = Number(parameters.avgPerVisit)
+        const margin = rate > 0 && avg > 0 && avg > rate ? avg - rate : null
+        const costPct = rate > 0 && avg > 0 ? (rate / avg) * 100 : null
+        const keepPct = costPct !== null ? 100 - costPct : null
+        return (
+          <div className="rounded-xl border border-navy/15 bg-light-navy px-4 py-3">
+            <p className="mb-0.5 text-xs font-semibold uppercase tracking-wide text-navy/50">Margin per visit</p>
+            <p className="text-sm leading-relaxed text-navy/80">
+              {margin !== null && keepPct !== null
+                ? <>
+                    The practice keeps {fmtCurrency(margin)} ({fmtNumber(keepPct)}%) of every {fmtCurrency(avg > 0 ? avg : null)} collected per visit, before other overhead, at the current rate.
+                  </>
+                : rate > 0 && avg > 0 && rate >= avg
+                  ? <span className="text-red">The rate per visit equals or exceeds average collections — this role costs more than it brings in.</span>
+                  : <span className="text-navy/40">Enter rate and average collections to see margin.</span>
+              }
+            </p>
+          </div>
+        )
+      })()}
+
       {structureType === 'collections_only' && (() => {
         const pct = Number(parameters.collectionsPct)
         const target = Number(parameters.targetComp)

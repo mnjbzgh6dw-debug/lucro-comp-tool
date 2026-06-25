@@ -256,6 +256,20 @@ export const STRUCTURES = {
     description: 'Fixed dollar amount per patient visit — no base, no bonus.',
     overview:
       'Fixed dollar amount per visit. No ambiguity, no complexity. Use this for sessional or irregular arrangements where a full employment structure doesn\'t make sense. The limitation: no incentive around billing quality or collections follow-through. If that matters for the role, set that expectation separately and explicitly.',
+    guide: [
+      {
+        heading: 'Why this model works',
+        text: 'A fixed rate per visit is the simplest structure to explain and the easiest to track — no thresholds, no tiers, nothing to reconcile at month-end beyond a visit count.',
+      },
+      {
+        heading: 'When to use it',
+        text: 'Best suited to sessional, locum, or irregular arrangements where a full base-salary employment structure doesn\'t fit the role.',
+      },
+      {
+        heading: 'Considerations',
+        text: 'Because pay doesn\'t depend on what\'s actually collected, this model carries no built-in incentive for billing accuracy or collections follow-through. Keep an eye on the margin between what you collect and what you pay per visit — if that gap narrows, the role may be costing more than it should relative to what it brings in.',
+      },
+    ],
     metric: { key: 'visits', label: 'Visits / Month', format: 'number' },
     defaults: {
       visitRate: 25,
@@ -268,13 +282,13 @@ export const STRUCTURES = {
         key: 'visitsPerMonth',
         label: 'Estimated visits per month',
         type: 'number',
-        hint: 'Scenario baseline — the "At Goal" row uses this.',
+        hint: 'Your best estimate of monthly visit volume for this role. Used to project total monthly pay and compare it against collections.',
       },
       {
         key: 'avgPerVisit',
         label: 'Average collections per visit',
         type: 'currency',
-        hint: 'Used for the sustainability calculation.',
+        hint: 'What this role typically brings in per visit, on average. This doesn\'t affect what the team member is paid — it\'s used only to show you the margin this rate leaves, since this model pays the same per visit regardless of how much is actually collected.',
       },
     ],
   },
