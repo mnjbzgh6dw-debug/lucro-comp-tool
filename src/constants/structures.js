@@ -208,10 +208,25 @@ export const STRUCTURES = {
     description: 'Escalating bonus % as collections hit higher bands.',
     overview:
       'A flat bonus treats every dollar above goal the same way. This model doesn\'t — the rate escalates the further they push past the target. Use it when a strong performer has plateaued on a flat bonus and needs a new reason to push. Review the thresholds annually — what was a stretch target last year may be standard performance this year.',
+    guide: [
+      {
+        heading: 'Why this model works',
+        text: 'A flat bonus treats every dollar above goal the same. This model rewards the push further — the rate escalates as collections climb, giving a strong performer a reason to keep going once they\'ve already cleared the bar.',
+      },
+      {
+        heading: 'When to use it',
+        text: 'Best suited to someone who has plateaued on a flat bonus and needs a fresh incentive to keep pushing, or a producer with the consistent volume to realistically reach higher bands.',
+      },
+      {
+        heading: 'Considerations',
+        text: 'Cumulative and cliff calculation methods can produce very different payouts from the same collections figure — decide deliberately, and use the worked example above to see the actual difference for your numbers. Review thresholds annually: a tier that was a stretch goal last year can quietly become standard performance, at which point it stops functioning as an incentive.',
+      },
+    ],
     metric: { key: 'collections', label: 'Monthly Collections', format: 'currency' },
     defaults: {
       baseSalary: 4000,
       monthlyGoal: 40000,
+      tierMethod: 'Cumulative',
       tiers: [
         { upper: 50000, pct: 15 },
         { upper: 60000, pct: 20 },
@@ -221,6 +236,16 @@ export const STRUCTURES = {
     fields: [
       { key: 'baseSalary', label: 'Base salary (monthly)', type: 'currency' },
       { key: 'monthlyGoal', label: 'Monthly collections goal', type: 'currency' },
+      {
+        key: 'tierMethod',
+        label: 'Tier calculation method',
+        type: 'toggle',
+        fullWidth: true,
+        options: [
+          { value: 'Cumulative', label: 'Cumulative' },
+          { value: 'Cliff', label: 'Cliff' },
+        ],
+      },
       { key: 'tiers', label: 'Bonus tiers (above goal)', type: 'tiers' },
     ],
   },
@@ -325,6 +350,7 @@ export const STRUCTURES = {
     defaults: {
       baseSalary: 4000,
       monthlyGoal: 40000,
+      tierMethod: 'Cumulative',
       tier1Pct: 15,
       tier1Cap: 15000,
       tier2Pct: 25,
@@ -332,6 +358,16 @@ export const STRUCTURES = {
     fields: [
       { key: 'baseSalary', label: 'Base salary (monthly)', type: 'currency' },
       { key: 'monthlyGoal', label: 'Monthly collections goal', type: 'currency' },
+      {
+        key: 'tierMethod',
+        label: 'Tier calculation method',
+        type: 'toggle',
+        fullWidth: true,
+        options: [
+          { value: 'Cumulative', label: 'Cumulative' },
+          { value: 'Cliff', label: 'Cliff' },
+        ],
+      },
       {
         key: 'tier1Pct',
         label: 'Tier 1 bonus % (overage up to cap)',

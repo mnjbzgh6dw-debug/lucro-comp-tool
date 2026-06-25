@@ -1,6 +1,8 @@
+import { useEffect, useRef, useState } from 'react'
 import { useApp } from '../../AppContext'
 import { STRUCTURES } from '../../constants/structures'
 import { validateStructure } from '../../utils/calculations'
+import { calcTierBonus, tieredBands, hybridBands } from '../../utils/calculations/_tierCalc'
 import { fmtCurrency, fmtNumber } from '../../utils/format'
 import CurrencyInput from '../shared/CurrencyInput'
 import Tooltip from '../shared/Tooltip'
@@ -167,6 +169,71 @@ function FieldRenderer({ field, params, updateParam }) {
   )
 }
 
+function TierMethodExplainer({ structureType, parameters }) {
+  const method = parameters.tierMethod || 'Cumulative'
+  const prevMethod = useRef(method)
+  const [flash, setFlash] = useState(false)
+
+  useEffect(() => {
+    if (prevMethod.current !== method) {
+      prevMethod.current = method
+      setFlash(true)
+      const t = setTimeout(() => setFlash(false), 2000)
+      return () => clearTimeout(t)
+    }
+  }, [method])
+
+  // Build bands and pick a representative example overage
+  const bands = structureType === 'tiered_collections'
+    ? tieredBands(parameters)
+    : hybridBands(parameters)
+
+  let exampleOverage = null
+  if (bands.length >= 2) {
+    const firstBand = bands[0]
+    const secondBand = bands[1]
+    // Pick midpoint of second band (or midpoint of first+10k if open-ended)
+    const secondTo = secondBand.to === Infinity ? firstBand.to + 10000 : secondBand.to
+    exampleOverage = Math.round((firstBand.to + secondTo) / 2 / 1000) * 1000
+  } else if (bands.length === 1 && bands[0].to !== Infinity) {
+    exampleOverage = Math.round(bands[0].to * 0.6 / 1000) * 1000
+  }
+
+  const cumPayout = exampleOverage ? calcTierBonus(bands, exampleOverage, 'Cumulative') : null
+  const cliffPayout = exampleOverage ? calcTierBonus(bands, exampleOverage, 'Cliff') : null
+
+  return (
+    <div className="sm:col-span-2 rounded-xl border border-navy/10 bg-light-navy px-4 py-4 space-y-2 text-sm text-navy/80">
+      <div className="flex items-center justify-between">
+        <p>
+          <span className="font-semibold">Cumulative</span> — each dollar of overage is paid at
+          the rate for its own band, like a tax bracket. Crossing into a higher tier only changes
+          the rate on the dollars <em>above</em> that threshold.
+        </p>
+      </div>
+      <p>
+        <span className="font-semibold">Cliff</span> — once total overage crosses a tier
+        threshold, the entire overage is paid at that tier&apos;s rate, retroactively.
+      </p>
+      <p className="text-navy/55 text-xs">
+        Cumulative is the more common approach and avoids a known issue with cliff structures:
+        falling just short of a threshold can cost far more than the shortfall itself.
+      </p>
+      {exampleOverage !== null && cumPayout !== null && cliffPayout !== null && (
+        <p className="border-t border-navy/10 pt-2 text-xs font-medium text-navy/70">
+          For example, at {fmtCurrency(exampleOverage)} in overage, this would pay{' '}
+          <span className="text-navy font-semibold">{fmtCurrency(cumPayout)}</span> under Cumulative
+          {' '}vs.{' '}
+          <span className="text-navy font-semibold">{fmtCurrency(cliffPayout)}</span> under Cliff.
+        </p>
+      )}
+      {flash && (
+        <p className="text-xs font-semibold text-gold animate-pulse">Scenarios recalculated</p>
+      )}
+    </div>
+  )
+}
+
 export default function Step3Parameters() {
   const { structureType, parameters, updateParam } = useApp()
   const structure = STRUCTURES[structureType]
@@ -198,14 +265,24 @@ export default function Step3Parameters() {
       )}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {structure.fields.map((field) => (
-          <div
-            key={field.key}
-            className={field.type === 'tiers' ? 'sm:col-span-2' : ''}
-          >
-            <FieldRenderer field={field} params={parameters} updateParam={updateParam} />
-          </div>
-        ))}
+        {structure.fields.flatMap((field) => {
+          const el = (
+            <div key={field.key} className={field.type === 'tiers' || field.fullWidth ? 'sm:col-span-2' : ''}>
+              <FieldRenderer field={field} params={parameters} updateParam={updateParam} />
+            </div>
+          )
+          if (field.key === 'tierMethod') {
+            return [
+              el,
+              <TierMethodExplainer
+                key="tier-explainer"
+                structureType={structureType}
+                parameters={parameters}
+              />,
+            ]
+          }
+          return [el]
+        })}
       </div>
 
       {structureType === 'collections_only' && (() => {

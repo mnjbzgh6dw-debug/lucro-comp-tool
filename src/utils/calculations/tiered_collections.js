@@ -1,11 +1,10 @@
 import { num, reqNum, safeDiv, EMPTY_RESULT } from './_helpers'
+import { calcTierBonus, tieredBands } from './_tierCalc'
 
 export function monthlyGoal(params) {
   return reqNum(params.monthlyGoal)
 }
 
-// Tiers describe collection bands ABOVE the goal. Band lower bounds chain:
-// tier 0 lower = goal, tier n lower = tier (n-1) upper. Uppers must ascend.
 export function validateTiers(params) {
   const goal = reqNum(params.monthlyGoal)
   const tiers = Array.isArray(params.tiers) ? params.tiers : []
@@ -26,31 +25,17 @@ export function calc(params, metricValue) {
   const monthlyBase = reqNum(params.baseSalary)
   const goal = reqNum(params.monthlyGoal)
   const actualCollections = num(metricValue)
-  const tiers = Array.isArray(params.tiers) ? params.tiers : []
+  const method = params.tierMethod || 'Cumulative'
+
   if (monthlyBase === null || goal === null || actualCollections === null) {
     return { ...EMPTY_RESULT, monthlyBase, extra: { monthlyGoal: goal } }
   }
 
-  let bonusEarned = 0
-  let remaining = Math.max(0, actualCollections - goal)
-  let lower = goal
-  for (const tier of tiers) {
-    const upper = num(tier.upper)
-    const pct = num(tier.pct)
-    if (upper === null || pct === null) continue
-    const bandAmount = Math.min(remaining, Math.max(0, upper - lower))
-    bonusEarned += bandAmount * (pct / 100)
-    remaining -= bandAmount
-    lower = upper
-    if (remaining <= 0) break
-  }
-  // Anything above the top tier earns at the top tier's rate (open-ended top band).
-  if (remaining > 0 && tiers.length > 0) {
-    const topPct = num(tiers[tiers.length - 1].pct) ?? 0
-    bonusEarned += remaining * (topPct / 100)
-  }
-
+  const overage = Math.max(0, actualCollections - goal)
+  const bands = tieredBands(params)
+  const bonusEarned = calcTierBonus(bands, overage, method)
   const totalComp = monthlyBase + bonusEarned
+
   return {
     bonus: bonusEarned,
     totalComp,
@@ -59,6 +44,6 @@ export function calc(params, metricValue) {
     belowGoal: actualCollections < goal,
     note: null,
     monthlyBase,
-    extra: { monthlyGoal: goal, tiers },
+    extra: { monthlyGoal: goal, tiers: params.tiers, method },
   }
 }
