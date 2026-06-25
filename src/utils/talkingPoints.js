@@ -43,11 +43,15 @@ const BUILDERS = {
     const name = nameOf(ctx)
     const avg = Number(params.avgPerVisit)
     const req = result.extra.requiredCollections
+    const period = params.visitPeriod === 'Week' ? 'week' : 'month'
     let visitsForTarget = null
-    if (req && Number.isFinite(avg) && avg > 0) visitsForTarget = req / avg
+    if (req && Number.isFinite(avg) && avg > 0) {
+      visitsForTarget = req / avg
+      if (period === 'week') visitsForTarget = visitsForTarget / 4.33
+    }
     return [
+      `To take home ${fmtCurrency(params.targetComp)} a month, ${name} needs to bring in ${fmtCurrency(req)} in collections — about ${fmtNumber(visitsForTarget)} visits a ${period} at your current average.`,
       `There's no guaranteed salary — ${name} earns exactly ${fmtNumber(params.collectionsPct)}% of what they produce.`,
-      `To take home ${fmtCurrency(params.targetComp)}/month, ${name} needs ${fmtCurrency(req)} in collections — roughly ${fmtNumber(visitsForTarget)} visits.`,
       `Every patient seen flows straight into ${name}'s paycheck — incentives are fully aligned with production.`,
       `The trade-off is no floor: slow months are lean, but strong months are uncapped.`,
     ]

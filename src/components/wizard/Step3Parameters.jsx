@@ -1,6 +1,7 @@
 import { useApp } from '../../AppContext'
 import { STRUCTURES } from '../../constants/structures'
 import { validateStructure } from '../../utils/calculations'
+import { fmtCurrency, fmtNumber } from '../../utils/format'
 import CurrencyInput from '../shared/CurrencyInput'
 import Tooltip from '../shared/Tooltip'
 
@@ -206,6 +207,27 @@ export default function Step3Parameters() {
           </div>
         ))}
       </div>
+
+      {structureType === 'collections_only' && (() => {
+        const pct = Number(parameters.collectionsPct)
+        const target = Number(parameters.targetComp)
+        const avg = Number(parameters.avgPerVisit)
+        const isWeek = parameters.visitPeriod === 'Week'
+        const reqColl = pct > 0 && target > 0 ? target / (pct / 100) : null
+        const visitsRaw = reqColl && avg > 0 ? reqColl / avg : null
+        const visits = isWeek && visitsRaw ? visitsRaw / 4.33 : visitsRaw
+        const period = isWeek ? 'week' : 'month'
+        return (
+          <div className="rounded-xl border border-navy/15 bg-light-navy px-4 py-3">
+            <p className="mb-0.5 text-xs font-semibold uppercase tracking-wide text-navy/50">What this means</p>
+            <p className="text-sm leading-relaxed text-navy/80">
+              To take home {fmtCurrency(target > 0 ? target : null)}/month,{' '}
+              {fmtCurrency(reqColl)} in collections is needed —{' '}
+              about {fmtNumber(visits)} visits a {period} at your current average.
+            </p>
+          </div>
+        )
+      })()}
 
       {structure.guide && (
         <div className="rounded-xl border border-navy/10 bg-light-navy px-4 py-4 space-y-4">

@@ -153,6 +153,20 @@ export const STRUCTURES = {
       'No guaranteed salary — team member earns a straight % of collections.',
     overview:
       'No guaranteed salary — the team member earns a straight percentage of what they collect. Zero fixed payroll cost for the practice; uncapped earning potential for them. Use this for a confident, experienced producer who doesn\'t need the security of a base. Where it goes wrong: offering it to someone who isn\'t yet producing consistently enough to carry the uncertainty.',
+    guide: [
+      {
+        heading: 'Why this model works',
+        text: 'With no base to fall back on, the incentive is direct and immediate — every visit and every dollar collected translates straight into income, with no ceiling.',
+      },
+      {
+        heading: 'When to use it',
+        text: 'Best suited to a confident, experienced producer who doesn\'t need the security of a guaranteed salary, and who can sustain consistent production without the stability a base provides.',
+      },
+      {
+        heading: 'Considerations',
+        text: 'This model carries real income volatility for the team member — a slow month means a slow paycheck, with nothing to cushion it. It can also create payroll unpredictability for the practice in the other direction, since there\'s no fixed cost to plan around. Offering this to someone who isn\'t yet producing consistently shifts risk onto them that they may not be ready to carry.',
+      },
+    ],
     metric: { key: 'collections', label: 'Monthly Collections', format: 'currency' },
     defaults: {
       collectionsPct: 40,
@@ -183,7 +197,7 @@ export const STRUCTURES = {
         key: 'targetComp',
         label: 'Target monthly take-home',
         type: 'currency',
-        hint: 'Used to reverse-calculate the visits needed to hit this number.',
+        hint: 'Enter the monthly take-home this team member is aiming for. The tool will calculate the collections and visits needed to get there, based on the collections % and average collections per visit you\'ve set.',
       },
     ],
   },
